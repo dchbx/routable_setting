@@ -1,4 +1,3 @@
-
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "routable_setting/version"
@@ -49,6 +48,13 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec"
-  # spec.add_development_dependency "pry"
+
+  spec.add_development_dependency "rspec", "~> 3.0"
+
+  # spec.add_dependency 'rails', '4.2.7.1'
+  spec.add_dependency 'mongoid', '~> 5.4.0'
+
+  # spec.add_development_dependency "bundler", "~> 1.10"
+  # spec.add_development_dependency "rake", "~> 10.0"
+  # spec.add_development_dependency "rspec"
 end
