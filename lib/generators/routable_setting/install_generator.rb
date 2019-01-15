@@ -1,12 +1,24 @@
 require 'rails/generators/base'
-module RoutableSetting::Generators
-	class InstallGenerator < Rails::Generators::Base
-		desc "Create a MongoDB collection <my_application>_routable_settings to store local settings"
+require 'routable_setting'
 
-		def create_mdb_collection
-			## Code to create collection here
+module RoutableSetting
+  module Generators
+    class InstallGenerator < Rails::Generators::Base
+      desc "Create a MongoDB collection <my_application>_routable_settings to store local settings"
 
-		end
+      source_root File.expand_path("../../templates", __FILE__)
 
-	end
+      argument :collection_name, type: :string, default: 'routable_settings'
+      class_option :collection_name, type: :string, default: 'routable_settings'
+
+      def copy_initializer
+        self.collection_name = options["collection_name"]
+        template "routable_setting.template", "config/initializers/routable_setting.rb"
+      end
+
+      def create_mdb_collection
+        RoutableSetting::Setting.create_mdb_collection(options)
+      end
+    end
+  end
 end
