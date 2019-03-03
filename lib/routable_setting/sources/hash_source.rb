@@ -6,9 +6,13 @@ module RoutableSetting
         @hash = hash
       end
 
-      def load
+      def routable_key(key)
+        [RoutableSetting.setting_prefix, key].join('.')
+      end
+
+      def store
         @hash.each do |key, options|
-          RoutableSetting::Setting[key] = options
+          RoutableSetting::Setting[routable_key(key)] = options
         end
       end
     end

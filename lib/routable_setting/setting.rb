@@ -6,6 +6,8 @@ module RoutableSetting
     include Mongoid::Document
     include Mongoid::Timestamps
 
+    # store_in collection: RoutableSetting.db_collection
+
     field :label,       type: String  # fill using key like i18n in the form if not provided
     field :description, type: String
 
@@ -48,6 +50,20 @@ module RoutableSetting
       end
     end
 
+    def to_nested_hash
+      nested_hash(key.split("."), default)
+    end
+
+    def nested_hash(arr, value)
+      if arr.empty?
+        value
+      else
+        {}.tap do |hash|
+          hash[arr.shift] = nested_hash(arr, value)
+        end
+      end
+    end
+
     class << self
 
       def [](key)
@@ -70,12 +86,16 @@ module RoutableSetting
         with(collection: RoutableSetting.db_collection).by_key(key).first
       end
 
+      def find_all
+        with(collection: RoutableSetting.db_collection).all
+      end
+
       def setting_cache
         Caches::SettingCache.new(self)
       end
 
       def create_mdb_collection(options)
-        collection_name = options["collection_name"]
+        collection_name = options[:collection_name]
 
         begin
           db = Mongoid.default_client.database
