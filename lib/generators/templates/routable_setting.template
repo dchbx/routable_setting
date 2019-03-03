@@ -1,4 +1,6 @@
 RoutableSetting.configure do |config|
 
-  config.db_collection = "<%= collection_name %>"
+  config.db_collection  = "<%= collection_name %>"
+  config.setting_prefix = "<%= options.setting_prefix %>"
+  config.source_format  = "<%= options.source_format %>"
 end
