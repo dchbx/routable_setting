@@ -4,6 +4,8 @@ module RoutableSetting
     def add_source!(source)
       if source.is_a?(Hash)
         source = RoutableSetting::Sources::HashSource.new(source)
+      elsif source.is_a?(String)
+        source = RoutableSetting::Sources::YamlSource.new(source)
       else
         source = RoutableSetting::Sources::DbSource.new(source)
       end
@@ -23,6 +25,8 @@ module RoutableSetting
       conf = {}
       @config_sources.each do |source|
         source_conf = source.load
+
+        binding.pry
 
         if conf.empty?
           conf = source_conf

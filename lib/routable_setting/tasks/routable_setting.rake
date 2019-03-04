@@ -5,23 +5,16 @@ namespace :routable_setting do
 
       require File.expand_path(engine.root.to_s + RoutableSetting::CONFIG_PATH)
 
-      Dir.glob(engine.root.to_s + '/db/seedfiles/configurations/*').each do |file|
-        require file
-      end
-
       puts "*"*80 unless Rails.env.test?
-      puts "::: Generating Configurations :::"
+      puts "::: Loading Configurations :::"
 
-      configurations = [IVL_CONFIGURATIONS, SHOP_CONFIGURATIONS].reduce({}, :merge)
-
-      unless Rails.env.test?
-        p configurations
+      files = if RoutableSetting.source_format.to_sym == :yaml
+        Dir.glob(engine.root.to_s + '/db/seedfiles/configurations/*.yml')
+      else
+        Dir.glob(engine.root.to_s + '/db/seedfiles/configurations/*.rb')
       end
 
-      RoutableSetting.import_settings(configurations)
-
-      IVL_CONFIGURATIONS  = {}
-      SHOP_CONFIGURATIONS = {}
+      RoutableSetting.store_settings!(files)
 
       puts "::: Configurations Complete :::"
       puts "*"*80 unless Rails.env.test?
