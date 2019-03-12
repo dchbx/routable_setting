@@ -66,15 +66,17 @@ module RoutableSetting
 
     class << self
 
-      def [](key)
-        setting_cache.fetch(key)
-      end
+      # def [](key)
+      #   setting_cache.fetch(key)
+      # end
 
       def []=(key, attrs)
+        puts key.inspect
+        
         find_or_initialize_setting(key).tap do |setting|
           setting.attributes = attrs
           setting.with(collection: RoutableSetting.db_collection).save!
-          setting_cache.write(setting)
+          # setting_cache.write(setting)
         end
       end
 
@@ -90,9 +92,9 @@ module RoutableSetting
         with(collection: RoutableSetting.db_collection).all
       end
 
-      def setting_cache
-        Caches::SettingCache.new(self)
-      end
+      # def setting_cache
+      #   Caches::SettingCache.new(self)
+      # end
 
       def create_mdb_collection(options)
         collection_name = options[:collection_name]

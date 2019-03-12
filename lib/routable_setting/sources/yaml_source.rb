@@ -38,7 +38,7 @@ module RoutableSetting
             key = match_str
           end
 
-          if v.is_a?(Hash) && v.values.any?{|v| v.is_a?(Hash) }
+          if v.is_a?(Hash) && (Setting.fields.keys & v.keys).blank? #v.values.any?{|v| v.is_a?(Hash) }
             ret.merge! to_dotted_hash(v, key + ".")
           else
             ret[key] = v

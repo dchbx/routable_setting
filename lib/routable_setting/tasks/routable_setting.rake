@@ -3,7 +3,7 @@ namespace :routable_setting do
   task :import_settings, :routable_engines do |t, args|
     args.routable_engines.each do |engine|
 
-      require File.expand_path(engine.root.to_s + RoutableSetting::CONFIG_PATH)
+      load File.expand_path(engine.root.to_s + RoutableSetting::CONFIG_PATH)
 
       puts "*"*80 unless Rails.env.test?
       puts "::: Loading Configurations :::"

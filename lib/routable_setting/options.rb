@@ -26,8 +26,6 @@ module RoutableSetting
       @config_sources.each do |source|
         source_conf = source.load
 
-        binding.pry
-
         if conf.empty?
           conf = source_conf
         else
