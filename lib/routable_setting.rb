@@ -11,11 +11,8 @@ require 'deep_merge'
 
 module RoutableSetting
 
-  CONFIG_PATH = "/config/initializers/routable_setting.rb" 
-
+  CONFIG_PATH = '/config/initializers/routable_setting.rb'
   mattr_accessor :const_name, :db_collection, :setting_prefix, :source_format
-
-  # @@const_name = 'RoutableSettings'
 
   class << self
 
@@ -46,10 +43,6 @@ module RoutableSetting
       options.load!
     end
 
-    def cache_key(key)
-      "#{self.to_s.underscore}_#{key}"
-    end
-
     def set_dynamic_finders(options)
       options.to_h.keys.each do |key|
         define_singleton_method :"#{key}" do
@@ -58,15 +51,14 @@ module RoutableSetting
       end
     end
 
-    # def set_environment_const(options)
-    #   Kernel.send(:remove_const, RoutableSetting.const_name) if Kernel.const_defined?(RoutableSetting.const_name)
-    #   Kernel.const_set(RoutableSetting.const_name, options)
-    # end
-
     def routable_engines
       [Rails] + Rails::Engine.subclasses.select do |engine|
         File.exists?(engine.root.to_s + CONFIG_PATH)
       end
+    end
+
+    def cache_key(key)
+      [self.to_s.underscore, key.to_s].join('_')
     end
   end
 

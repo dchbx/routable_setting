@@ -66,10 +66,6 @@ module RoutableSetting
 
     class << self
 
-      # def [](key)
-      #   setting_cache.fetch(key)
-      # end
-
       def []=(key, attrs)
         puts key.inspect
         
@@ -92,12 +88,8 @@ module RoutableSetting
         with(collection: RoutableSetting.db_collection).all
       end
 
-      # def setting_cache
-      #   Caches::SettingCache.new(self)
-      # end
-
       def create_mdb_collection(options)
-        collection_name = options[:collection_name]
+        collection_name = options[:collection]
 
         begin
           db = Mongoid.default_client.database
@@ -107,6 +99,7 @@ module RoutableSetting
         end
 
         if db.collection_names.exclude?(collection_name)
+          puts "::: Create mongo collection #{collection_name}:::"
           db.command(:eval => "db.createCollection('#{collection_name}')")
         end
       end
