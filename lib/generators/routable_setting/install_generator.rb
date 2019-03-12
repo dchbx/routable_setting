@@ -8,10 +8,9 @@ module RoutableSetting
 
       source_root File.expand_path("../../templates", __FILE__)
 
-      argument :collection_name, type: :string, default: 'routable_settings'
-
-      class_option :setting_prefix, type: :string, default: 'main_app'
-      class_option :source_format, type: :string, default: 'yaml'
+      class_option :source_format,   type: :string, default: 'yaml'
+      class_option :setting_prefix,  type: :string, default: 'main_app'
+      class_option :collection_name, type: :string, default: 'routable_settings'
 
       def copy_initializer
         template "routable_setting.template", "config/initializers/routable_setting.rb"
@@ -26,7 +25,7 @@ module RoutableSetting
         end
 
         Mongoid.load!(mongo_settings)
-        RoutableSetting::Setting.create_mdb_collection({collection_name: collection_name})
+        RoutableSetting::Setting.create_mdb_collection({collection_name: options.collection_name})
       end
     end
   end
