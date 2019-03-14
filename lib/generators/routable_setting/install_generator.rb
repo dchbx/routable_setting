@@ -13,7 +13,7 @@ module RoutableSetting
       class_option :collection_name, type: :string, default: 'routable_settings'
 
       def copy_initializer
-        template 'routable_setting.template', RoutableSetting::CONFIG_PATH
+        template 'routable_setting.template', RoutableSetting.config_abs_path
       end
     end
   end

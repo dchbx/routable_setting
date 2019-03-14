@@ -7,7 +7,12 @@ module RoutableSetting
       end
 
       def load
-        require File.expand_path(@component.root.to_s + RoutableSetting::CONFIG_PATH)
+
+        begin
+          require File.expand_path(@component.root.to_s + RoutableSetting::CONFIG_PATH)
+        rescue LoadError
+          puts "Load Error: Unable to find #{@component.root.to_s + RoutableSetting::CONFIG_PATH}"
+        end
 
         setting_hash = {}
 

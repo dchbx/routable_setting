@@ -60,6 +60,10 @@ module RoutableSetting
     def cache_key(key)
       [self.to_s.underscore, key.to_s].join('_')
     end
+
+    def config_abs_path
+      CONFIG_PATH.gsub(/^./, "")
+    end
   end
 
   class Error < StandardError; end
