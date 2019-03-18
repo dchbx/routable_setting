@@ -61,7 +61,13 @@ module RoutableSetting
           v = v.collect { |e| e.instance_of?(Hash) ? __convert(e) : e }
         end
 
-        s.send("#{k}=".to_sym, v)
+        value = if v.is_a?(RoutableSetting::Options)
+          v
+        else
+          eval(v)
+        end
+
+        s.send("#{k}=".to_sym, value)
       end
       s
     end
